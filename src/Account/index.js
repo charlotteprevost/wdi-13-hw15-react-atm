@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+// import Form from './Form.js';
 
 
 class Account extends Component {
@@ -14,11 +15,6 @@ class Account extends Component {
     }
   }
 
-  logItAll = () => {
-      console.log(`userInput: `, this.userInput.value);
-      // console.log(`this.inputElem: `, this.inputElem);
-  }
-
   balanceRef = (balanceDiv) => {
     this.balanceDiv = balanceDiv;
   }
@@ -29,12 +25,9 @@ class Account extends Component {
 
   depositClick = (event) => {
       event.preventDefault();
-      console.log(typeof this.userInput.value);
+      console.log(`depositClick`, event);
 
       let inputAmount = parseInt(this.userInput.value);
-
-      console.log(`inputAmount: `, typeof inputAmount);
-      console.log(`inputAmount: `, inputAmount);
 
       if (this.userInput.value === '' || isNaN(inputAmount)){
         inputAmount = 0;
@@ -46,21 +39,16 @@ class Account extends Component {
         balance: newTotal
       });
 
-      if (newTotal === 0){
-        this.balanceDiv.className += " zero";
-      } else {
-        this.balanceDiv.className = "balance";
-      };
+      this.ifBalanceZero(newTotal);
 
       this.userInput.value = null;
   }
 
   withdrawClick = (event) => {
       event.preventDefault();
+      console.log(`withdrawClick`, event);
 
       let inputAmount = parseInt(this.userInput.value);
-
-      console.log(`inputAmount: `, typeof inputAmount);
 
       if (inputAmount === '' || isNaN(inputAmount)){
         inputAmount = 0;
@@ -76,13 +64,17 @@ class Account extends Component {
         balance: newTotal
       })
 
+      this.ifBalanceZero(newTotal);
+
+      this.userInput.value = null;
+  }
+
+  ifBalanceZero = (newTotal) => {
       if (newTotal === 0){
         this.balanceDiv.className += " zero";
       } else {
         this.balanceDiv.className = "balance";
       }
-
-      this.userInput.value = null;
   }
 
   render() {
