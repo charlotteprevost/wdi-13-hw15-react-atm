@@ -29,26 +29,48 @@ class Account extends Component {
 
   depositClick = (event) => {
       event.preventDefault();
-      const inputAmount = this.userInput.value;
-      const newTotal = this.state.balance + parseInt(inputAmount);
+      console.log(typeof this.userInput.value);
+
+      let inputAmount = parseInt(this.userInput.value);
+
+      console.log(`inputAmount: `, typeof inputAmount);
+      console.log(`inputAmount: `, inputAmount);
+
+      if (this.userInput.value === '' || isNaN(inputAmount)){
+        inputAmount = 0;
+      };
+
+      const newTotal = this.state.balance + inputAmount;
+
       this.setState({
         balance: newTotal
-      })
+      });
+
+      if (newTotal === 0){
+        this.balanceDiv.className += " zero";
+      } else {
+        this.balanceDiv.className = "balance";
+      };
+
       this.userInput.value = null;
   }
 
   withdrawClick = (event) => {
       event.preventDefault();
-      
-      let inputAmount = this.userInput.value;
 
-      if (inputAmount > this.state.balance){
+      let inputAmount = parseInt(this.userInput.value);
+
+      console.log(`inputAmount: `, typeof inputAmount);
+
+      if (inputAmount === '' || isNaN(inputAmount)){
+        inputAmount = 0;
+      } else if (inputAmount > this.state.balance){
         inputAmount = this.state.balance
       } else {
         inputAmount = this.userInput.value;
-      }
+      };
 
-      const newTotal = this.state.balance - parseInt(inputAmount);
+      const newTotal = this.state.balance - inputAmount;
 
       this.setState({
         balance: newTotal
@@ -64,6 +86,7 @@ class Account extends Component {
   }
 
   render() {
+    console.log(this.userInput.value);
     return (
       <div className="account">
         <h2>{this.props.name}</h2>
